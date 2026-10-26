@@ -1,0 +1,7 @@
+MODEL PARAMETER SUMMARY
+======================================================================
+Total Parameters:      4,234,057
+Trainable Parameters:  1,262,105
+Frozen Parameters:     2,971,952
+Trainable % of Total:  29.81%
+======================================================================

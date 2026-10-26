@@ -1,0 +1,40 @@
+# environments and caches
+.venv*/
+.hf_cache/
+.cache/
+__pycache__/
+.pytest_cache/
+*.py[cod]
+*.egg-info/
+.vscode/
+.idea/
+
+# secrets
+.env
+.env.*
+!.env.example
+*token*
+
+# raw data, derived features and model binaries (DACON terms: no redistribution;
+# checkpoints and predictions are GitHub Release assets)
+Data/*
+!Data/train.csv
+!Data/val.csv
+!Data/test.csv
+**/features/
+*_predictions.csv
+*.npz
+*.npy
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.docx
+*.zip
+
+# OS / logs
+*.log
+*.tmp
+Thumbs.db
+Desktop.ini
+.DS_Store

@@ -1,0 +1,15 @@
+# P1 Claim vs Results Table
+
+| Original P1 claim / objective | Experimental test used | Result | Supported / Partially supported / Not supported | Required thesis adjustment |
+|---|---|---|---|---|
+| Hybrid model improves accuracy | E2-matched-8 vs E3-8 on the fixed test split | E2-matched-8 achieved higher accuracy than E3-8: 0.987515 vs 0.973643. | Not supported | Remove accuracy-improvement claim. Report E2-matched-8 as the strongest predictive model. |
+| Hybrid model improves scalability / NISQ feasibility | 4D and 8D compressed bottleneck VQC runs using PennyLane `lightning.qubit` | E3-4 and E3-8 ran as compact VQC heads, but E3 ran on CPU simulator and did not show computational-efficiency improvement. | Partially supported | State that the VQC is feasible as a compact NISQ-style head, not that it improves runtime or scalability. |
+| VQC can process compressed multimodal features | E3-4 and E3-8 using frozen 1280D image embedding + 64D IoT embedding projected to VQC inputs | The VQC processed 4D and 8D compressed multimodal features and produced valid classifier outputs. | Supported | Keep this as a feasibility result. |
+| IoT + image fusion improves disease detection | E0/E1/E2 fusion comparison and E2-matched-8 result | Classical fusion is strong. E2 and E2-matched-8 show that image-IoT fusion can improve disease-stage detection relative to weaker single-modality baselines, but final strength comes from classical fusion. | Supported | Attribute fusion benefit to multimodal learning, not to the quantum layer. |
+| VQC captures nonlinear image-IoT correlations better than classical head | Parameter-matched E2-matched-8 vs E3-8 | E3-8 did not beat E2-matched-8 in Accuracy, Macro F1, Macro Recall, or robustness. | Not supported | Remove or weaken this claim. Say the tested VQC did not provide stronger predictive modeling than the matched classical head. |
+| Bottleneck size affects severe-stage recognition | E2/E3 4D vs 8D bottleneck sweep and severe-stage confusion analysis | 4D caused severe-stage failure, especially E3-4 with severe recall 0.000000. 8D recovered severe recall to 0.803571 for both E2-matched-8 and E3-8. | Supported | Add bottleneck capacity as a main experimental finding. |
+| Quantum model improves calibration/confidence quality | Single-seed robustness and five-seed IoT robustness stability check | E3-8 kept lower ECE than E2-matched-8 across all IoT corruption seeds. | Supported | Keep calibration as the main positive quantum finding. Do not generalize it to accuracy or robustness. |
+
+## Active Attack Branch Note
+
+The table above is the thesis-safe interpretation before any successful attack run. The active `e3_beat_e2_attack` branch has not changed the claim status yet. The completed warm-start run improved E3 Macro F1 to 0.956587, but it did not beat the E2-matched-8 bar of 0.973356. The current active direction is `docs/by_stage/06_e3_attack/E3_BEAT_E2_ATTACK_PLAN.md`; next target is `e3_8_warm_pair_s42`, with residual shortcut as the Section 13.2.5 follow-up.

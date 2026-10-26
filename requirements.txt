@@ -1,0 +1,31 @@
+# FOR THESIS / MAIN - pinned environment for reproducing E0, E1, and E2.
+# Versions verified against the live .venv-e1 interpreter on 2026-06-03.
+#
+# The torch/torchvision builds are CUDA 12.8 wheels. Install them from the
+# PyTorch CUDA index, e.g.:
+#
+#   pip install -r requirements.txt --extra-index-url https://download.pytorch.org/whl/cu128
+#
+# A CPU-only environment can drop the "+cu128" local-version suffix and the
+# extra index URL; E0/E1/E2 scripts fall back to CPU automatically.
+
+# Deep learning stack (CUDA 12.8 wheels)
+torch==2.11.0+cu128
+torchvision==0.26.0+cu128
+
+# Numerics / data
+numpy==1.26.4
+pandas==2.3.3
+scipy==1.15.3
+scikit-learn==1.7.2
+
+# Image IO used by torchvision.io.read_image in the E0/E2 extraction path
+pillow==12.2.0
+
+# Plotting for result/figure generation (optional for training, used by docs)
+matplotlib==3.10.9
+seaborn==0.13.2
+
+# Quantum stack for E3 VQC experiments
+pennylane==0.42.3
+pennylane-lightning==0.42.0

@@ -1,0 +1,41 @@
+Steps: 
+1)Split(Stratified) the train set into train and validation. Now I have train/test/val set 
+2)Apply Image transformation (224 x 224) on train, val and test set. 
+3)Apply Augmentation to training split only 
+4)Build and Freeze the model 
+→Load MobileNetV3–Large with pretrained ImageNet weights 
+→Freeze All Weights 
+→Swap Classifier Head to my specific number of custom classes. Because this layer is new, its 
+weights are active  
+→Log Total Active Parameters (A loop to count and save the exact number of trainable parameters 
+remaining in my custom classifier head. This serves as the strict classical control benchmark. ) 
+5)Execute Training Loop 
+→Track Step-by-Step Performance: For each epoch , run your training images through the network, 
+compute the loss, update the classification head's weights, and measure your Training Loss.  
+→Run Validation Audits: At the absolute end of every single epoch, put the model into evaluation 
+mode and calculate your Validation Loss and Validation Accuracy.  
+→Save Peak Performance: Program your script to check validation accuracy after each epoch. If the 
+current epoch beats the previous high score, save that exact model state  
+Things to Track: 
+During Training:  
+1) Training Loss: Use the Training Set. 
+2) Validation Loss: Use the Validation Set. 
+3) Validation Accuracy 
+3) Training Time per Epoch: Measured using a timer code block during the active loop execution. 
+After Training: 
+On Test Set: 
+1) Test Accuracy: Overall correctness under ideal, familiar conditions. 
+2) Test Macro F1-Score: Performance across all classes (crucial for handling imbalanced classes in 
+custom data). 
+3) Confusion Matrix: Displays exactly which custom classes are being mistaken for one another. 
+4) ROC-AUC Curves: Measures how well the model separates your classes based on probability 
+thresholds. 
+On OOD Set: 
+1) OOD Test Accuracy: Overall correctness when exposed to unfamiliar environments. 
+2) OOD Test Macro F1-Score: Class-by-class performance on the unfamiliar dataset. 
+3) Expected Calibration Error (ECE): Measures if the model's confidence scores actually match its 
+accuracy under a domain shift. 
+OOD and Test set: 
+1) The Domain-Shift Gap: Standard Test Accuracy - OOD Test Accuracy 
+Others: 
+1)Trainable Parameter Count  

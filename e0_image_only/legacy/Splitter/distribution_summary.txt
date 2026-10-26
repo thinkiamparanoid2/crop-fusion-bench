@@ -1,0 +1,28 @@
+Class distribution summary for e0_image_only/legacy/splits
+Generated: 2026-05-31
+
+Label field used: label
+Train total: 46713
+Val total: 5193
+Classes: 25
+
+Max relative percent difference: 0.017% for label '3_00_0' (train 9597, val 1066)
+Max absolute difference: 8531 for label '3_00_0'
+
+Top 10 labels by relative percent difference:
+
+Label                          Train   Val   Train%   Val%   Rel%   AbsDiff
+3_00_0                         9597   1066  20.545  20.528  0.017  8531
+6_00_0                         6808    756  14.574  14.558  0.016  6052
+6_b4_3                         103     12   0.220   0.231  0.011    91
+6_a11_2                         41      5   0.088   0.096  0.009    36
+5_b7_1                        1209    134   2.588   2.580  0.008  1075
+3_b6_1                        1209    134   2.588   2.580  0.008  1075
+5_b6_1                        1220    136   2.612   2.619  0.007  1084
+6_a12_1                        105     12   0.225   0.231  0.006    93
+6_b4_1                         132     15   0.283   0.289  0.006   117
+3_a9_3                         204     23   0.437   0.443  0.006   181
+
+Notes:
+- Values computed from e0_image_only/legacy/splits/train.csv and e0_image_only/legacy/splits/val.csv created by `split_train_val.py`.
+- Relative percent difference is the absolute difference in percentage points between train% and val%.

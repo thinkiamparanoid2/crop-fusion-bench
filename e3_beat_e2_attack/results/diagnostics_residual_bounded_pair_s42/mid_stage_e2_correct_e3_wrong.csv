@@ -1,0 +1,3 @@
+image,label,stage,pred_label_e2,pred_stage_e2,correct_e2,confidence_e2,pred_label_e3,pred_stage_e3,correct_e3,confidence_e3,e2_correct_e3_wrong,e3_wrong
+11087,3_a9_2,2,3_a9_2,2,True,0.5496046,3_a9_1,1,False,0.4880168,True,True
+28232,3_a9_2,2,3_a9_2,2,True,0.46932027,3_a9_1,1,False,0.7322092,True,True

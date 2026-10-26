@@ -1,0 +1,3 @@
+phase,epoch,train_loss,lr,val_loss,val_accuracy,val_macro_f1,val_macro_recall,val_early_stage_recall,val_mid_stage_recall,val_severe_stage_recall,val_ece
+vqc_only,1,3.239925265312195,0.005,3.47537100315094,0.0,0.0,0.0,,,,0.05795426537952153
+joint,2,3.200305461883545,0.0001,3.3909958600997925,0.0,0.0,0.0,,,,0.059606023132801056

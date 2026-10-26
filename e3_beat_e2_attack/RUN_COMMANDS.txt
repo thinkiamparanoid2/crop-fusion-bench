@@ -1,0 +1,285 @@
+# E3 Beat E2 Attack Commands
+
+Use the project venv explicitly. Do not rely on PowerShell activation state.
+
+```powershell
+cd "G:\FOR THESIS\MAIN"
+```
+
+## 1. Fast Diagnostic
+
+```powershell
+& "G:\FOR THESIS\MAIN\.venv-e1\Scripts\python.exe" -u e3_beat_e2_attack\scripts\diagnose_mid_stage_errors.py
+```
+
+Post-warm-start diagnostic using `e3_8_warm_s42` best Macro-F1 predictions:
+
+```powershell
+& "G:\FOR THESIS\MAIN\.venv-e1\Scripts\python.exe" -u e3_beat_e2_attack\scripts\diagnose_mid_stage_errors.py `
+  --e2-predictions e3_bottleneck_sweep\results\e2_matched_8_test_predictions.csv `
+  --e3-predictions e3_beat_e2_attack\results\e3_8_warm_s42_best_macro_test_predictions.csv `
+  --out-dir e3_beat_e2_attack\results\diagnostics_warm_s42 `
+  --report-path docs\by_stage\06_e3_attack\MID_STAGE_ERROR_DIAGNOSTIC_WARM_S42.md
+```
+
+## 2. Warm-Start E3-8 From E2-Matched-8
+
+Quick smoke check:
+
+```powershell
+& "G:\FOR THESIS\MAIN\.venv-e1\Scripts\python.exe" -u e3_beat_e2_attack\scripts\train_warmstart_e3.py --seed 42 --run-name smoke_warmstart --batch-size 64 --vqc-only-epochs 1 --joint-epochs 1 --patience 2 --max-train-batches 2 --max-eval-batches 2 --progress-batches 1
+```
+
+Seed 42, foreground visible output:
+
+```powershell
+& "G:\FOR THESIS\MAIN\.venv-e1\Scripts\python.exe" -u e3_beat_e2_attack\scripts\train_warmstart_e3.py --seed 42 --run-name e3_8_warm_s42 --batch-size 128 --vqc-only-epochs 15 --joint-epochs 60 --patience 20 --vqc-only-lr 0.005 --joint-vqc-lr 0.001 --joint-head-lr 0.0001 --progress-batches 25
+```
+
+Seed 42, background run with log files:
+
+```powershell
+$out="G:\FOR THESIS\MAIN\e3_beat_e2_attack\e3_8_warm_s42_stdout.log"
+$err="G:\FOR THESIS\MAIN\e3_beat_e2_attack\e3_8_warm_s42_stderr.log"
+Remove-Item -LiteralPath $out -Force -ErrorAction SilentlyContinue
+Remove-Item -LiteralPath $err -Force -ErrorAction SilentlyContinue
+$p = Start-Process -FilePath "G:\FOR THESIS\MAIN\.venv-e1\Scripts\python.exe" -ArgumentList @("-u","e3_beat_e2_attack\scripts\train_warmstart_e3.py","--seed","42","--run-name","e3_8_warm_s42","--batch-size","128","--vqc-only-epochs","15","--joint-epochs","60","--patience","20","--vqc-only-lr","0.005","--joint-vqc-lr","0.001","--joint-head-lr","0.0001","--progress-batches","25") -WorkingDirectory "G:\FOR THESIS\MAIN" -RedirectStandardOutput $out -RedirectStandardError $err -WindowStyle Hidden -PassThru
+$p.Id
+```
+
+Seed 13:
+
+```powershell
+& "G:\FOR THESIS\MAIN\.venv-e1\Scripts\python.exe" -u e3_beat_e2_attack\scripts\train_warmstart_e3.py --seed 13 --run-name e3_8_warm_s13 --batch-size 128 --vqc-only-epochs 15 --joint-epochs 60 --patience 20 --vqc-only-lr 0.005 --joint-vqc-lr 0.001 --joint-head-lr 0.0001 --progress-batches 25
+```
+
+Seed 37:
+
+```powershell
+& "G:\FOR THESIS\MAIN\.venv-e1\Scripts\python.exe" -u e3_beat_e2_attack\scripts\train_warmstart_e3.py --seed 37 --run-name e3_8_warm_s37 --batch-size 128 --vqc-only-epochs 15 --joint-epochs 60 --patience 20 --vqc-only-lr 0.005 --joint-vqc-lr 0.001 --joint-head-lr 0.0001 --progress-batches 25
+```
+
+## 3. Compare Attack Runs
+
+```powershell
+& "G:\FOR THESIS\MAIN\.venv-e1\Scripts\python.exe" -u e3_beat_e2_attack\scripts\compare_attack_runs.py
+```
+
+## 4. Pair-Targeted Warm-Start
+
+This targets the diagnostic failure `3_a9_2 -> 3_a9_1`.
+
+Quick smoke check:
+
+```powershell
+& "G:\FOR THESIS\MAIN\.venv-e1\Scripts\python.exe" -u e3_beat_e2_attack\scripts\train_warmstart_e3.py --seed 42 --run-name smoke_warm_pair --batch-size 64 --vqc-only-epochs 1 --joint-epochs 1 --patience 2 --vqc-only-lr 0.005 --joint-vqc-lr 0.001 --joint-head-lr 0.0001 --pair-loss --pair-true-label 3_a9_2 --pair-confuser-label 3_a9_1 --pair-lambda 2.0 --pair-margin-lambda 1.0 --pair-margin 0.5 --max-train-batches 2 --max-eval-batches 2 --progress-batches 1
+```
+
+Full first pair-loss run, shorter than the 8-hour warm-start:
+
+```powershell
+& "G:\FOR THESIS\MAIN\.venv-e1\Scripts\python.exe" -u e3_beat_e2_attack\scripts\train_warmstart_e3.py --model e3_vqc --seed 42 --run-name e3_8_warm_pair_s42 --batch-size 128 --vqc-only-epochs 8 --joint-epochs 35 --patience 10 --min-patience 20 --early-stop-warmup 20 --vqc-only-lr 0.005 --joint-vqc-lr 0.001 --joint-head-lr 0.0001 --pair-loss --pair-true-label 3_a9_2 --pair-confuser-label 3_a9_1 --pair-lambda 2.0 --pair-margin-lambda 1.0 --pair-margin 0.5 --progress-batches 25
+```
+
+## 5. Residual Bottleneck Shortcut
+
+Run the paired classical comparator first. This should be much faster than the VQC run.
+
+Short diagnostic E2 residual:
+
+```powershell
+& "G:\FOR THESIS\MAIN\.venv-e1\Scripts\python.exe" -u e3_beat_e2_attack\scripts\train_warmstart_e3.py `
+  --model e2_matched `
+  --residual `
+  --run-name e2_matched_8_residual_diag_s42 `
+  --seed 42 `
+  --batch-size 512 `
+  --vqc-only-epochs 5 `
+  --joint-epochs 25 `
+  --patience 8 `
+  --min-patience 8 `
+  --alpha-init 0.1 `
+  --progress-batches 25
+```
+
+Short diagnostic E3 residual:
+
+```powershell
+& "G:\FOR THESIS\MAIN\.venv-e1\Scripts\python.exe" -u e3_beat_e2_attack\scripts\train_warmstart_e3.py `
+  --model e3_vqc `
+  --residual `
+  --run-name e3_8_warm_residual_diag_s42 `
+  --seed 42 `
+  --batch-size 128 `
+  --vqc-only-epochs 5 `
+  --joint-epochs 25 `
+  --patience 8 `
+  --min-patience 8 `
+  --sim lightning.qubit `
+  --alpha-init 0.1 `
+  --progress-batches 25
+```
+
+The free-alpha E3 diagnostic finished with `alpha_final ~= 13.6`, so do not spend time on the full free-alpha residual run unless you explicitly want that ablation. The next residual check should bound alpha so the shortcut cannot drown the VQC branch.
+
+Short diagnostic E2 residual with bounded alpha:
+
+```powershell
+& "G:\FOR THESIS\MAIN\.venv-e1\Scripts\python.exe" -u e3_beat_e2_attack\scripts\train_warmstart_e3.py `
+  --model e2_matched `
+  --residual `
+  --alpha-bounded `
+  --alpha-max 1.0 `
+  --run-name e2_matched_8_residual_bounded_diag_s42 `
+  --seed 42 `
+  --batch-size 512 `
+  --vqc-only-epochs 5 `
+  --joint-epochs 25 `
+  --patience 8 `
+  --min-patience 8 `
+  --alpha-init 0.1 `
+  --progress-batches 25
+```
+
+Short diagnostic E3 residual with bounded alpha:
+
+```powershell
+& "G:\FOR THESIS\MAIN\.venv-e1\Scripts\python.exe" -u e3_beat_e2_attack\scripts\train_warmstart_e3.py `
+  --model e3_vqc `
+  --residual `
+  --alpha-bounded `
+  --alpha-max 1.0 `
+  --run-name e3_8_warm_residual_bounded_diag_s42 `
+  --seed 42 `
+  --batch-size 128 `
+  --vqc-only-epochs 5 `
+  --joint-epochs 25 `
+  --patience 8 `
+  --min-patience 8 `
+  --sim lightning.qubit `
+  --alpha-init 0.1 `
+  --progress-batches 25
+```
+
+Only run a full residual pair if a diagnostic E3 residual looks promising.
+
+## 6. Combined Bounded Residual + Pair-Loss Diagnostic
+
+Run the paired classical comparator first. This combines the best E3 Macro-F1 lever so far
+(`--residual --alpha-bounded`) with the targeted progression-pair loss.
+
+Combined diagnostic E2 bounded residual + pair-loss:
+
+```powershell
+& "G:\FOR THESIS\MAIN\.venv-e1\Scripts\python.exe" -u e3_beat_e2_attack\scripts\train_warmstart_e3.py `
+  --model e2_matched `
+  --residual `
+  --alpha-bounded `
+  --alpha-max 1.0 `
+  --run-name e2_matched_8_residual_bounded_pair_diag_s42 `
+  --seed 42 `
+  --batch-size 512 `
+  --vqc-only-epochs 5 `
+  --joint-epochs 25 `
+  --patience 8 `
+  --min-patience 8 `
+  --alpha-init 0.1 `
+  --pair-loss `
+  --pair-true-label 3_a9_2 `
+  --pair-confuser-label 3_a9_1 `
+  --pair-lambda 2.0 `
+  --pair-margin-lambda 1.0 `
+  --pair-margin 0.5 `
+  --progress-batches 25
+```
+
+Combined diagnostic E3 bounded residual + pair-loss:
+
+```powershell
+& "G:\FOR THESIS\MAIN\.venv-e1\Scripts\python.exe" -u e3_beat_e2_attack\scripts\train_warmstart_e3.py `
+  --model e3_vqc `
+  --residual `
+  --alpha-bounded `
+  --alpha-max 1.0 `
+  --run-name e3_8_warm_residual_bounded_pair_diag_s42 `
+  --seed 42 `
+  --batch-size 128 `
+  --vqc-only-epochs 5 `
+  --joint-epochs 25 `
+  --patience 8 `
+  --min-patience 8 `
+  --sim lightning.qubit `
+  --alpha-init 0.1 `
+  --pair-loss `
+  --pair-true-label 3_a9_2 `
+  --pair-confuser-label 3_a9_1 `
+  --pair-lambda 2.0 `
+  --pair-margin-lambda 1.0 `
+  --pair-margin 0.5 `
+  --progress-batches 25
+```
+
+Run this after both combined diagnostics:
+
+```powershell
+& "G:\FOR THESIS\MAIN\.venv-e1\Scripts\python.exe" -u e3_beat_e2_attack\scripts\compare_attack_runs.py
+```
+
+## 7. Full Free-Alpha Residual Ablation
+
+Full E2 residual:
+
+```powershell
+& "G:\FOR THESIS\MAIN\.venv-e1\Scripts\python.exe" -u e3_beat_e2_attack\scripts\train_warmstart_e3.py `
+  --model e2_matched `
+  --residual `
+  --run-name e2_matched_8_residual_s42 `
+  --seed 42 `
+  --batch-size 512 `
+  --vqc-only-epochs 15 `
+  --joint-epochs 75 `
+  --patience 20 `
+  --min-patience 20 `
+  --alpha-init 0.1 `
+  --progress-batches 25
+```
+
+Full E3 residual:
+
+```powershell
+& "G:\FOR THESIS\MAIN\.venv-e1\Scripts\python.exe" -u e3_beat_e2_attack\scripts\train_warmstart_e3.py `
+  --model e3_vqc `
+  --residual `
+  --run-name e3_8_warm_residual_s42 `
+  --seed 42 `
+  --batch-size 128 `
+  --vqc-only-epochs 15 `
+  --joint-epochs 75 `
+  --patience 20 `
+  --min-patience 20 `
+  --sim lightning.qubit `
+  --alpha-init 0.1 `
+  --progress-batches 25
+```
+
+## 8. Refresh Comparison
+
+Run this after each completed attack run:
+
+```powershell
+& "G:\FOR THESIS\MAIN\.venv-e1\Scripts\python.exe" -u e3_beat_e2_attack\scripts\compare_attack_runs.py
+```
+
+## 9. Monitor A Background Run
+
+For seed 42:
+
+```powershell
+Get-Content -LiteralPath "G:\FOR THESIS\MAIN\e3_beat_e2_attack\e3_8_warm_s42_stdout.log" -Wait -Tail 30
+```
+
+Errors:
+
+```powershell
+Get-Content -LiteralPath "G:\FOR THESIS\MAIN\e3_beat_e2_attack\e3_8_warm_s42_stderr.log" -Wait -Tail 30
+```

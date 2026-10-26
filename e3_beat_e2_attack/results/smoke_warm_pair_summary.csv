@@ -1,0 +1,3 @@
+run_name,checkpoint_kind,seed,test_accuracy,test_macro_f1,test_macro_recall,test_early_recall,test_mid_recall,test_severe_recall,test_ece,beats_e2_macro_f1_bar
+smoke_warm_pair,best_macro,42,0.0,0.0,0.0,0.42857142857142855,0.3333333333333333,,0.05541574893868528,False
+smoke_warm_pair,best_mid,42,0.0,0.0,0.0,0.42857142857142855,0.3333333333333333,,0.05541574893868528,False
