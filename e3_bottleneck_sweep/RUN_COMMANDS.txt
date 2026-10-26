@@ -1,0 +1,62 @@
+Run from repo root:
+
+G:\FOR THESIS\MAIN
+
+Smoke test:
+
+```powershell
+& ".\.venv-e1\Scripts\python.exe" .\e3_bottleneck_sweep\scripts\smoke_test.py
+```
+
+Train E2-matched-8:
+
+```powershell
+& ".\.venv-e1\Scripts\python.exe" .\e3_bottleneck_sweep\scripts\train_bottleneck.py `
+  --model e2_matched `
+  --bottleneck 8 `
+  --run-name e2_matched_8 `
+  --batch-size 512 `
+  --epochs 60 `
+  --patience 8 `
+  --lr 0.001 `
+  --weight-decay 0.0001
+```
+
+Train E3-8 VQC:
+
+```powershell
+& ".\.venv-e1\Scripts\python.exe" .\e3_bottleneck_sweep\scripts\train_bottleneck.py `
+  --model e3_vqc `
+  --bottleneck 8 `
+  --vqc-layers 4 `
+  --run-name e3_8_vqc `
+  --sim lightning.qubit `
+  --batch-size 512 `
+  --epochs 60 `
+  --patience 8 `
+  --lr 0.001 `
+  --weight-decay 0.0001
+```
+
+Analyze severe-stage confusion:
+
+```powershell
+& ".\.venv-e1\Scripts\python.exe" .\e3_bottleneck_sweep\scripts\analyze_severe_confusion.py
+```
+
+Generate final comparison:
+
+```powershell
+& ".\.venv-e1\Scripts\python.exe" .\e3_bottleneck_sweep\scripts\compare_bottlenecks.py
+```
+
+Main outputs:
+
+```text
+e3_bottleneck_sweep\results\e2_matched_8_metrics.json
+e3_bottleneck_sweep\results\e3_8_vqc_metrics.json
+e3_bottleneck_sweep\results\severe_stage_confusion.csv
+e3_bottleneck_sweep\results\severe_stage_confusion.md
+docs\results\E3_4_vs_E3_8_BOTTLENECK_COMPARISON.md
+```
+

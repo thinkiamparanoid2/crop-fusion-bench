@@ -1,0 +1,12 @@
+{
+  "n_bootstrap": 1000,
+  "ci": 0.95,
+  "seed": 20260609,
+  "absolute_ci_method": "resample saved condition predictions with replacement",
+  "drop_ci_method": "paired bootstrap aligned by sample_id",
+  "macro_f1_handling": "present-class macro-F1; labels absent from a resample are skipped",
+  "clean_reference_rule": {
+    "e0_e1": "severity-0 clean",
+    "e2_regenerated_conditions": "severity-0 clean_regen"
+  }
+}

@@ -1,0 +1,3 @@
+run_name,checkpoint_kind,seed,test_accuracy,test_macro_f1,test_macro_recall,test_early_recall,test_mid_recall,test_severe_recall,test_ece,beats_e2_macro_f1_bar
+e3_8_warm_residual_bounded_pair_diag_s42,best_macro,42,0.9852609675741286,0.9686551859052664,0.9681856945153444,0.9751318764129616,0.9363636363636364,0.8035714285714286,0.10866540197547231,False
+e3_8_warm_residual_bounded_pair_diag_s42,best_mid,42,0.6963759320270505,0.6248519298187442,0.7491330444506957,0.8485305199698568,0.9886363636363636,0.375,0.22369333667328897,False

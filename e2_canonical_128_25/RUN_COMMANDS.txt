@@ -1,0 +1,31 @@
+# E2 128-to-25 classical fusion experiment
+
+This folder trains an isolated E2 variant using the existing frozen E0/E1 cached
+embeddings from:
+
+```text
+e2_multimodal_fusion/features/
+```
+
+Architecture:
+
+```text
+Linear(1344,128) -> BatchNorm1d(128) -> ReLU -> Dropout(0.1) -> Linear(128,25)
+```
+
+Run from repo root:
+
+```powershell
+& "G:\FOR THESIS\MAIN\.venv-e1\Scripts\python.exe" "e2_canonical_128_25\scripts\train_e2_128_25.py" --run-name e2_canonical_128_25 --batch-size 512 --epochs 60 --patience 8 --lr 0.001 --weight-decay 0.0001
+```
+
+Outputs:
+
+```text
+e2_canonical_128_25/checkpoints/best_e2_canonical_128_25.pt
+e2_canonical_128_25/results/e2_canonical_128_25_metrics.json
+e2_canonical_128_25/results/e2_canonical_128_25_history.csv
+e2_canonical_128_25/results/e2_canonical_128_25_val_predictions.csv
+e2_canonical_128_25/results/e2_canonical_128_25_test_predictions.csv
+e2_canonical_128_25/results/confusion_matrices/e2_canonical_128_25_test_confusion_matrix.csv
+```

@@ -1,0 +1,257 @@
+{
+  "experiment_group": "e3_beat_e2_attack",
+  "run_name": "e3_8_warm_residual_bounded_pair_diag_s42",
+  "checkpoint_kind": "best_macro",
+  "seed": 42,
+  "model": "e3_vqc",
+  "residual": true,
+  "alpha_init": 0.1,
+  "alpha_bounded": true,
+  "alpha_max": 1.0,
+  "alpha_final": 0.9995364546775818,
+  "alpha_raw_final": 4.184783458709717,
+  "warm_start_source": "G:\\FOR THESIS\\MAIN\\e3_bottleneck_sweep\\checkpoints\\best_e2_matched_8.pt",
+  "transplanted_modules": [
+    "projection",
+    "readout"
+  ],
+  "bottleneck_dim": 8,
+  "qubits": 8,
+  "vqc_layers": 4,
+  "sim": "lightning.qubit",
+  "device": "cpu",
+  "batch_size": 128,
+  "vqc_only_epochs": 5,
+  "joint_epochs": 25,
+  "patience": 8,
+  "effective_patience": 8,
+  "early_stop_warmup": 0,
+  "vqc_only_lr": 0.005,
+  "joint_vqc_lr": 0.001,
+  "joint_head_lr": 0.0001,
+  "weight_decay": 0.0001,
+  "optimizer": "AdamW",
+  "loss": "weighted_cross_entropy_pair_targeted",
+  "pair_loss": true,
+  "pair_true_label": "3_a9_2",
+  "pair_confuser_label": "3_a9_1",
+  "pair_lambda": 2.0,
+  "pair_margin_lambda": 1.0,
+  "pair_margin": 0.5,
+  "dual_checkpoint_rule": "best_val_macro_f1 and best_val_mid_stage_recall",
+  "e2_matched_8_test_macro_f1_bar": 0.973356,
+  "beats_e2_macro_f1_bar": false,
+  "total_trainable_params": 173738,
+  "post_bottleneck_trainable_params": 65,
+  "val": {
+    "loss": 0.2919385226652523,
+    "accuracy": 0.9884459849797804,
+    "macro_f1": 0.9751552713221662,
+    "macro_recall": 0.9745413996062012,
+    "macro_roc_auc_ovr": 0.9962329818377748,
+    "weighted_roc_auc_ovr": 0.9989477480051525,
+    "per_stage_recall": {
+      "0": 0.9991582491582491,
+      "1": 0.9834162520729685,
+      "2": 0.9536082474226805,
+      "3": 0.8285714285714286
+    },
+    "early_stage_recall": 0.9834162520729685,
+    "ece": 0.10959936959330753
+  },
+  "test": {
+    "loss": 2.9336702216352646,
+    "accuracy": 0.9852609675741286,
+    "macro_f1": 0.9686551859052664,
+    "macro_recall": 0.9681856945153444,
+    "macro_roc_auc_ovr": 0.9968190708301964,
+    "weighted_roc_auc_ovr": 0.9988246155061943,
+    "per_stage_recall": {
+      "0": 0.9992393509127789,
+      "1": 0.9751318764129616,
+      "2": 0.9363636363636364,
+      "3": 0.8035714285714286
+    },
+    "early_stage_recall": 0.9751318764129616,
+    "ece": 0.10866540197547231,
+    "per_class": {
+      "1_00_0": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 810
+      },
+      "2_00_0": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 143
+      },
+      "2_a5_2": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 189
+      },
+      "3_00_0": {
+        "precision": 0.9957627118644068,
+        "recall": 0.9983007646559049,
+        "f1": 0.9970301230377598,
+        "support": 1177
+      },
+      "3_a9_1": {
+        "precision": 0.8,
+        "recall": 0.8311688311688312,
+        "f1": 0.8152866242038217,
+        "support": 154
+      },
+      "3_a9_2": {
+        "precision": 0.7217391304347827,
+        "recall": 0.7477477477477478,
+        "f1": 0.7345132743362832,
+        "support": 111
+      },
+      "3_a9_3": {
+        "precision": 0.9117647058823529,
+        "recall": 0.7380952380952381,
+        "f1": 0.8157894736842105,
+        "support": 42
+      },
+      "3_b3_1": {
+        "precision": 0.9938271604938271,
+        "recall": 0.9698795180722891,
+        "f1": 0.9817073170731707,
+        "support": 166
+      },
+      "3_b6_1": {
+        "precision": 0.9655172413793104,
+        "recall": 0.9859154929577465,
+        "f1": 0.975609756097561,
+        "support": 142
+      },
+      "3_b7_1": {
+        "precision": 1.0,
+        "recall": 0.9807692307692307,
+        "f1": 0.9902912621359223,
+        "support": 156
+      },
+      "3_b8_1": {
+        "precision": 0.9802631578947368,
+        "recall": 0.9738562091503268,
+        "f1": 0.9770491803278688,
+        "support": 153
+      },
+      "4_00_0": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 917
+      },
+      "5_00_0": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 69
+      },
+      "5_a7_2": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 99
+      },
+      "5_b6_1": {
+        "precision": 1.0,
+        "recall": 0.9864864864864865,
+        "f1": 0.9931972789115646,
+        "support": 148
+      },
+      "5_b7_1": {
+        "precision": 0.99375,
+        "recall": 1.0,
+        "f1": 0.9968652037617555,
+        "support": 159
+      },
+      "5_b8_1": {
+        "precision": 0.9936305732484076,
+        "recall": 0.9936305732484076,
+        "f1": 0.9936305732484076,
+        "support": 157
+      },
+      "6_00_0": {
+        "precision": 1.0,
+        "recall": 0.998792270531401,
+        "f1": 0.9993957703927493,
+        "support": 828
+      },
+      "6_a11_1": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 40
+      },
+      "6_a11_2": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 12
+      },
+      "6_a12_1": {
+        "precision": 0.9285714285714286,
+        "recall": 1.0,
+        "f1": 0.9629629629629629,
+        "support": 13
+      },
+      "6_a12_2": {
+        "precision": 0.9666666666666667,
+        "recall": 1.0,
+        "f1": 0.9830508474576272,
+        "support": 29
+      },
+      "6_b4_1": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 18
+      },
+      "6_b4_3": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 14
+      },
+      "6_b5_1": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 21
+      }
+    }
+  },
+  "classes": [
+    "1_00_0",
+    "2_00_0",
+    "2_a5_2",
+    "3_00_0",
+    "3_a9_1",
+    "3_a9_2",
+    "3_a9_3",
+    "3_b3_1",
+    "3_b6_1",
+    "3_b7_1",
+    "3_b8_1",
+    "4_00_0",
+    "5_00_0",
+    "5_a7_2",
+    "5_b6_1",
+    "5_b7_1",
+    "5_b8_1",
+    "6_00_0",
+    "6_a11_1",
+    "6_a11_2",
+    "6_a12_1",
+    "6_a12_2",
+    "6_b4_1",
+    "6_b4_3",
+    "6_b5_1"
+  ]
+}

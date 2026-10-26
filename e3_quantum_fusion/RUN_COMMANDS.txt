@@ -1,0 +1,64 @@
+Run from repo root:
+
+G:\FOR THESIS\MAIN
+
+Optional environment setup:
+
+```powershell
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned -Force
+.\scripts\thesis.ps1 -Action env
+```
+
+You do not need to activate the venv if you call `.venv-e1\Scripts\python.exe`
+directly, as the commands below do.
+
+1. Smoke test E2-matched and E3-4 shapes/parameter counts
+
+```powershell
+& ".\.venv-e1\Scripts\python.exe" .\e3_quantum_fusion\scripts\smoke_test.py
+```
+
+2. Train E2-matched-4 classical comparator
+
+```powershell
+& ".\.venv-e1\Scripts\python.exe" .\e3_quantum_fusion\scripts\train_e3.py `
+  --model e2_matched `
+  --run-name e2_matched_4 `
+  --batch-size 512 `
+  --epochs 60 `
+  --patience 8 `
+  --lr 0.001 `
+  --weight-decay 0.0001
+```
+
+3. Train E3-4 VQC
+
+```powershell
+& ".\.venv-e1\Scripts\python.exe" .\e3_quantum_fusion\scripts\train_e3.py `
+  --model e3_4 `
+  --run-name e3_4_vqc `
+  --sim lightning.qubit `
+  --batch-size 512 `
+  --epochs 60 `
+  --patience 8 `
+  --lr 0.001 `
+  --weight-decay 0.0001
+```
+
+Notes:
+
+```text
+E2-matched runs on CUDA when available.
+E3-4 runs on CPU with lightning.qubit because lightning.gpu is not installed.
+```
+
+Primary outputs:
+
+```text
+e3_quantum_fusion\results\e2_matched_4_metrics.json
+e3_quantum_fusion\results\e3_4_vqc_metrics.json
+e3_quantum_fusion\checkpoints\best_e2_matched_4.pt
+e3_quantum_fusion\checkpoints\best_e3_4_vqc.pt
+docs\results\E2_MATCHED_E3_4_COMPARISON.md
+```
+

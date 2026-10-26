@@ -1,0 +1,129 @@
+cd "G:\FOR THESIS\MAIN"
+
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned -Force
+
+.\scripts\thesis.ps1 -Action env
+
+This sets VIRTUAL_ENV and puts .venv-e1\Scripts first on PATH for this PowerShell
+process. If you want the visible venv prompt marker, run:
+
+. .\.venv-e1\Scripts\Activate.ps1
+
+
+======CANONICAL RUNS (authoritative list: docs\results\CANONICAL_RUNS.md)=====
+
+Canonical runs are frozen snapshot bundles under each experiment's canonical\ folder.
+Downstream E2/E3 steps read from these canonical snapshots by default. Training
+commands still write normal experiment outputs; promote a retrain into canonical\
+only after you intentionally re-lock it.
+
+E0 image-only:  e0_bs768_mobilenetv3large   (e0_image_only\canonical\)
+E1 IoT-only:    e1_bs512_mlp128x64          (e1_iot_only\canonical\)
+E2 fusion:      e2_bs512_fusionmlp          (e2_multimodal_fusion\canonical\)
+E3 matched:     e2_matched_4                (e3_quantum_fusion\results\)
+E3 quantum:     e3_4_vqc                    (e3_quantum_fusion\results\)
+
+Original training-run names (training scripts still emit these):
+  e0_manual_bs768_w0_20260602 / e1_h128_64_nodrop_wd_bs512_sched / e2_frozen_e0_manual_e1_h128_64_fusion
+
+scripts\thesis.ps1 replaces the older scripts\run_e0_e1_new_results.ps1 and
+scripts\setup_training_env.ps1 helpers.
+
+
+======ENVIRONMENT (one-time)=====
+
+Pinned in requirements.txt at the repo root (CUDA 12.8 wheels):
+
+& ".\.venv-e1\Scripts\python.exe" -m pip install -r requirements.txt --extra-index-url https://download.pytorch.org/whl/cu128
+
+
+======REGENERATE FROM SCRATCH (full pipeline order)=====
+
+Data\ (train/val/test.csv + per-sample image+IoT folders) must be present.
+Run in order; each step's outputs feed the next.
+
+1. E1 IoT features  ->  & ".\.venv-e1\Scripts\python.exe" e1_iot_only\scripts\extract_iot_features.py
+2. E0 train         ->  .\scripts\thesis.ps1 -Action e0
+3. E1 train         ->  .\scripts\thesis.ps1 -Action e1
+4. E2 extract       ->  .\scripts\thesis.ps1 -Action e2-extract
+5. E2 train         ->  .\scripts\thesis.ps1 -Action e2-train
+6. E3 smoke         ->  & ".\.venv-e1\Scripts\python.exe" .\e3_quantum_fusion\scripts\smoke_test.py
+7. E3 E2-matched    ->  see e3_quantum_fusion\RUN_COMMANDS.txt
+8. E3-4 VQC         ->  see e3_quantum_fusion\RUN_COMMANDS.txt
+
+The step 1 feature CSVs already exist (e1_iot_only\features\{train,test}_iot_features.csv);
+only re-run step 1 if Data changes.
+
+
+======E0=====
+
+.\scripts\thesis.ps1 -Action e0
+
+
+======E1=====
+
+.\scripts\thesis.ps1 -Action e1
+
+
+======E0 + E1=====
+
+.\scripts\thesis.ps1 -Action e0e1
+
+
+======E2=====
+
+.\scripts\thesis.ps1 -Action e2-extract
+.\scripts\thesis.ps1 -Action e2-train
+
+
+======E2 full extraction + training=====
+
+.\scripts\thesis.ps1 -Action e2
+
+
+======E3=====
+
+Full E3 command list:
+
+e3_quantum_fusion\RUN_COMMANDS.txt
+
+Smoke test:
+
+& ".\.venv-e1\Scripts\python.exe" .\e3_quantum_fusion\scripts\smoke_test.py
+
+Train E2-matched-4:
+
+& ".\.venv-e1\Scripts\python.exe" .\e3_quantum_fusion\scripts\train_e3.py `
+  --model e2_matched `
+  --run-name e2_matched_4 `
+  --batch-size 512 `
+  --epochs 60 `
+  --patience 8 `
+  --lr 0.001 `
+  --weight-decay 0.0001
+
+Train E3-4 VQC:
+
+& ".\.venv-e1\Scripts\python.exe" .\e3_quantum_fusion\scripts\train_e3.py `
+  --model e3_4 `
+  --run-name e3_4_vqc `
+  --sim lightning.qubit `
+  --batch-size 512 `
+  --epochs 60 `
+  --patience 8 `
+  --lr 0.001 `
+  --weight-decay 0.0001
+
+E3-4 runs on CPU with lightning.qubit in this environment because lightning.gpu
+is not installed. E2-matched-4 uses CUDA when available.
+
+
+======E3 BOTTLENECK SWEEP=====
+
+Full command list:
+
+e3_bottleneck_sweep\RUN_COMMANDS.txt
+
+Main report:
+
+docs\results\E3_4_vs_E3_8_BOTTLENECK_COMPARISON.md

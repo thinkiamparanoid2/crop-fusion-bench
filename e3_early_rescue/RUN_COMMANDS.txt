@@ -1,0 +1,74 @@
+Run from repo root:
+
+G:\FOR THESIS\MAIN
+
+1. E3-4 focal loss
+
+```powershell
+& ".\.venv-e1\Scripts\python.exe" .\e3_early_rescue\scripts\train_rescue.py `
+  --model e3_4 `
+  --loss focal `
+  --run-name e3_4_focal_g2 `
+  --sim lightning.qubit `
+  --gamma 2.0 `
+  --checkpoint-metric val_early_stage_recall `
+  --batch-size 512 `
+  --epochs 60 `
+  --patience 8
+```
+
+2. E2-matched focal loss
+
+```powershell
+& ".\.venv-e1\Scripts\python.exe" .\e3_early_rescue\scripts\train_rescue.py `
+  --model e2_matched `
+  --loss focal `
+  --run-name e2_matched_focal_g2 `
+  --gamma 2.0 `
+  --checkpoint-metric val_early_stage_recall `
+  --batch-size 512 `
+  --epochs 60 `
+  --patience 8
+```
+
+3. E3-4 weighted focal loss
+
+```powershell
+& ".\.venv-e1\Scripts\python.exe" .\e3_early_rescue\scripts\train_rescue.py `
+  --model e3_4 `
+  --loss weighted_focal `
+  --run-name e3_4_weighted_focal_g2 `
+  --sim lightning.qubit `
+  --gamma 2.0 `
+  --checkpoint-metric val_early_stage_recall `
+  --batch-size 512 `
+  --epochs 60 `
+  --patience 8
+```
+
+4. E2-matched weighted focal loss
+
+```powershell
+& ".\.venv-e1\Scripts\python.exe" .\e3_early_rescue\scripts\train_rescue.py `
+  --model e2_matched `
+  --loss weighted_focal `
+  --run-name e2_matched_weighted_focal_g2 `
+  --gamma 2.0 `
+  --checkpoint-metric val_early_stage_recall `
+  --batch-size 512 `
+  --epochs 60 `
+  --patience 8
+```
+
+5. Generate comparison report
+
+```powershell
+& ".\.venv-e1\Scripts\python.exe" .\e3_early_rescue\scripts\compare_rescue.py
+```
+
+Output:
+
+```text
+e3_early_rescue\results\E3_EARLY_RESCUE_COMPARISON.md
+```
+

@@ -1,0 +1,5 @@
+image,label,stage,pred_label_e2,pred_stage_e2,correct_e2,confidence_e2,pred_label_e3,pred_stage_e3,correct_e3,confidence_e3,e2_correct_e3_wrong,e3_wrong
+11087,3_a9_2,2,3_a9_2,2,True,0.5496046,3_a9_1,1,False,0.61631924,True,True
+23853,3_a9_2,2,3_a9_2,2,True,0.610637,3_a9_1,1,False,0.72788453,True,True
+26237,2_a5_2,2,2_a5_2,2,True,0.70789415,2_00_0,0,False,0.6998297,True,True
+28232,3_a9_2,2,3_a9_2,2,True,0.46932027,3_a9_1,1,False,0.7974875,True,True
